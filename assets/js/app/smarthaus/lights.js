@@ -1,4 +1,4 @@
-const LIGHTS_API = "http://zeenotheinventor.ngrok.io/lights";
+const LIGHTS_API = "https://zeenotheinventor.ngrok.io/lights";
 function setDeskLights(status) {
 
     const resource = status ? "on" : "off"
