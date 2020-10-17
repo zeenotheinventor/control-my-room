@@ -2,7 +2,7 @@
 <meta charset="utf-8" />
 <title>WebSocket Test</title>
 <script language="javascript" type="text/javascript">
-  var wsUri = "ws://localhost:10010/";
+  var wsUri = "ws://zeenotheinventor.ngrok.io/:10010/";
   var output;
 
   function init() {
@@ -77,7 +77,15 @@
 
   function doSend(message) {
     writeToScreen("SENT: " + message);
-    websocket.send(message);
+
+    const buffer = new ArrayBuffer(1);
+    buffer[0] = 1;
+
+    // set the value to first flag on and second flag off
+    let view = new Uint8Array(buffer);
+    view[0] = 0b10;
+
+    websocket.send(buffer);
   }
 
   function writeToScreen(message) {
