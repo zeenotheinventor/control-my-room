@@ -24,7 +24,7 @@ songs = [{
   src: "assets/songs/Other Example.mp3",
   title: "Avenged Sevenfold - Carry On",
   coverart: "assets/img/music/03.jpg"
-}, ];
+},];
 
 var initSongSrc = songs[0].src;
 var initSongTitle = songs[0].title;
