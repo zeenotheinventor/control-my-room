@@ -1,25 +1,18 @@
 const LIGHTS_API = "http://zeenotheinventor.ngrok.io/lights";
-function turnOnLights() {
-    axios
-        .get(`${LIGHTS_API}/on`)
-        .then(function (response) {
-            // handle success
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        });
-}
+function setDeskLights(status) {
 
-function turnOffLights() {
+    const resource = status ? "on" : "off"
     axios
-        .get(`${LIGHTS_API}/off`)
+        .get(`${LIGHTS_API}/${resource}`)
         .then(function (response) {
             // handle success
+            $(".light-switch").prop('checked', status);
+
         })
         .catch(function (error) {
             // handle error
-            console.log(error);
+            $(".light-switch").prop('checked', !status);
+            console.log(e)
         });
 }
 
@@ -34,21 +27,19 @@ async function getLightStatus() {
     }
 }
 
+
+
 (function ($) {
 
     $(function () {
         getLightStatus().then((status) => {
-            $("#desk-light-switch").prop('checked', status);
+            $(".light-switch").prop('checked', status);
         });
     });
 
     $(function () {
-        $("#desk-light-switch").on("click", function (event) {
-            if (event.target.checked) {
-                turnOnLights();
-            } else {
-                turnOffLights();
-            }
+        $(".light-switch ").on("click", function (event) {
+            setDeskLights(event.target.checked);
         });
     });
 })(jQuery);
