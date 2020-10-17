@@ -5,7 +5,6 @@
       .get(`${LIGHTS_API}/on`)
       .then(function (response) {
         // handle success
-        console.log(response.data);
       })
       .catch(function (error) {
         // handle error
@@ -27,7 +26,6 @@
 
   $(function () {
     $("#desk-light-switch").on("click", function (event) {
-      console.log(event.target.checked);
       if (event.target.checked) {
         turnOnLights();
       } else {
@@ -35,5 +33,4 @@
       }
     });
   });
-  function onToggleLightSwitch(event) {}
 })(jQuery);
