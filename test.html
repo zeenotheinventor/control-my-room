@@ -83,7 +83,7 @@
 
     // set the value to first flag on and second flag off
     let view = new Uint8Array(buffer);
-    view[0] = 0b10;
+    view[0] = 0b0;
 
     websocket.send(buffer);
   }
