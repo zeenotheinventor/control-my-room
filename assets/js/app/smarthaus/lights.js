@@ -1,5 +1,5 @@
 const LIGHTS_API = "https://zeenotheinventor.ngrok.io/lights";
-const WS_URI = "wss://zeenotheinventor.ngrok.io/:10010/";
+const WS_URI = "wss://zeenotheinventor.ngrok.io/";
 
 const LIGHTS_ON = 0b1;
 const LIGHTS_OFF = 0b0;
