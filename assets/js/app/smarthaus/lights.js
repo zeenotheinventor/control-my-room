@@ -4,6 +4,8 @@ const WS_URI = "wss://zeenotheinventor.ngrok.io/:10010/";
 const LIGHTS_ON = 0b1;
 const LIGHTS_OFF = 0b0;
 
+let debug = false;
+
 function setDeskLights(status) {
 
     const resource = status ? "on" : "off"
@@ -12,7 +14,6 @@ function setDeskLights(status) {
         .then(function (response) {
             // handle success
             $(".light-switch").prop('checked', status);
-            updateSocket(status ? LIGHTS_ON : LIGHTS_OFF)
 
         })
         .catch(function (error) {
@@ -33,47 +34,11 @@ async function getLightStatus() {
     }
 }
 
-function onOpen(evt) {
-    console.log("CONNECTED");
-}
-
-function onClose(evt) {
-    console.log("DISCONNECTED");
-}
-
-
-
-function onMessage(evt) {
-    let message = evt.data;
-
-    if (evt.data instanceof Blob) {
-        message = blobToUint8Array(evt.data);
-    }
-
-    console.log("Message Received: " + message);
-}
-
-function onError(evt) {
-    console.log(evt);
-}
-
-function updateSocket(message) {
-    console.log("SENDING: " + message);
-
-    const buffer = new ArrayBuffer(1);
-
-    // set the value to first flag on and second flag off
-    let view = new Uint8Array(buffer);
-    view[0] = message;
-
-    websocket.send(buffer);
-}
-
 function blobToUint8Array(b) {
-    var uri = URL.createObjectURL(b),
-        xhr = new XMLHttpRequest(),
-        i,
-        ui8;
+    var uri = URL.createObjectURL(b);
+    let xhr = new XMLHttpRequest();
+    let i;
+    let ui8;
 
     xhr.open("GET", uri, false);
     xhr.send();
@@ -89,7 +54,7 @@ function blobToUint8Array(b) {
         binary = xhr.response.charCodeAt(i);
     }
 
-    return (binary >>> 0).toString(2);
+    return binary >>> 0;
 }
 
 (function ($) {
@@ -109,16 +74,40 @@ function blobToUint8Array(b) {
     $(function () {
         websocket = new WebSocket(WS_URI, "echo-protocol");
         websocket.onopen = function (evt) {
-            onOpen(evt);
+            if (debug)
+                console.log("CONNECTED");
         };
         websocket.onclose = function (evt) {
-            onClose(evt);
+            if (debug)
+                console.log("DISCONNECTED");
         };
+
         websocket.onmessage = function (evt) {
-            onMessage(evt);
+            let message = evt.data;
+
+            if (evt.data instanceof Blob) {
+                message = blobToUint8Array(evt.data);
+            }
+
+            switch (message) {
+
+                case 0:
+                    $(".light-switch").prop('checked', false);
+                    break;
+                case 1:
+                    $(".light-switch").prop('checked', true);
+                    break;
+                default:
+                    console.log('No logic for case: ' + message);
+                    break;
+            }
+
+            if (debug) {
+                console.log("Message Received: " + (message === 1 ? "on" : "off"));
+            }
         };
         websocket.onerror = function (evt) {
-            onError(evt);
+            console.log(evt);
         };
 
     });
