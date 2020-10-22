@@ -10328,10 +10328,10 @@ nav.navbar .user-size.dropdown-menu a.logout:hover {
 
 .widget-28 .camera-active {
   background-color: #fff;
-  width: 80%;
-  padding: 1.6rem;
+  width: 60%;
+  padding: 1.2rem;
   position: absolute;
-  top: -35px;
+  top: -29px;
   border-radius: 4px;
   text-align: center;
   margin: 0 auto;
