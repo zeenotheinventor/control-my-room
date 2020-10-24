@@ -34,6 +34,14 @@ async function getLightStatus() {
     }
 }
 
+function getStreamStatus() {
+
+}
+
+function setIsOnline(onlineStatus) {
+    onlineStatus ? $('#feed-status').show('slow') : $('#feed-status').hide('slow');
+}
+
 function blobToUint8Array(b) {
     var uri = URL.createObjectURL(b);
     let xhr = new XMLHttpRequest();
