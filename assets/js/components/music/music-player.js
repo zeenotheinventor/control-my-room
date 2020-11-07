@@ -12,7 +12,6 @@ function secondsTimeSpanToHMS(s) {
   return h + ":" + (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s);
 };
 
-
 let videoURL = null;
 $('#playSongButton').click(() => {
   function getUrlParameter(url, name) {
@@ -25,8 +24,6 @@ $('#playSongButton').click(() => {
   videoURL = getUrlParameter($('#videoInput').val(), 'v');
 
   player.loadVideoById(videoURL, 0, "large");
-
-
 });
 
 // Change Songs Here
