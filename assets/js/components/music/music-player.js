@@ -34,16 +34,7 @@ songs = [{
   src: "assets/songs/example.mp3",
   title: "Waiting for the rain",
   coverart: "assets/img/music/01.jpg"
-},
-  // {
-  //   src: "assets/songs/Example.mp3",
-  //   title: "Ran D - Zombie",
-  //   coverart: "assets/img/music/02.jpg"
-  // }, {
-  //   src: "assets/songs/Other Example.mp3",
-  //   title: "Avenged Sevenfold - Carry On",
-  //   coverart: "assets/img/music/03.jpg"
-  // },
+}
 ];
 
 var initSongSrc = songs[0].src;
@@ -65,31 +56,14 @@ title.html(initSongTitle);
 cover.attr('src', initSongCover);
 
 $('.next').on('click', function () {
-  var songOrder = hiddenPlayer.attr('order');
-
-  if (items == songOrder) {
-    // num = 0;
-    // var songSrc = songs[0].src;
-    // var songTitle = songs[0].title;
-    // var songCover = songs[0].coverart;
-    // hiddenPlayer.attr('order', '0');
-    // hiddenPlayer.attr('src', songSrc).trigger('play');
-    // title.html(songTitle);
-    // cover.attr('src', songCover);
-  } else {
-    // console.log(songOrder);
-    // num += 1;
-    // var songSrc = songs[num].src;
-    // var songTitle = songs[num].title;
-    // var songCover = songs[num].coverart;
-    // hiddenPlayer.attr('src', songSrc).trigger('play');
-    // title.html(songTitle);
-    // cover.attr('src', songCover);
-    // hiddenPlayer.attr('order', num);
-  }
+  // TODO Next button functionality
 });
 
 $('.prev').on('click', function () {
+
+  // TODO Previous button functionality
+
+  return
   var songOrder = hiddenPlayer.attr('order');
 
   if (songOrder == 0) {
