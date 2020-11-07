@@ -14,7 +14,7 @@ function secondsTimeSpanToHMS(s) {
 
 
 let videoURL = null;
-$('#videoInput').change(() => {
+$('#playSongButton').click(() => {
   function getUrlParameter(url, name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -34,8 +34,7 @@ songs = [{
   src: "assets/songs/example.mp3",
   title: "Waiting for the rain",
   coverart: "assets/img/music/01.jpg"
-}
-];
+}];
 
 var initSongSrc = songs[0].src;
 var initSongTitle = songs[0].title;
