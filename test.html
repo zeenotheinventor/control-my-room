@@ -1,103 +1,157 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
-<title>WebSocket Test</title>
-<script language="javascript" type="text/javascript">
-  var wsUri = "wss://zeenotheinventor.ngrok.io/:10010/";
-  var output;
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WebSocket Test</title>
+    <script language="javascript" type="text/javascript">
+      var wsUri = "wss://zeenotheinventor.ngrok.io/:10010/";
+      var output;
 
-  function init() {
-    output = document.getElementById("output");
-    testWebSocket();
-  }
+      function init() {
+        output = document.getElementById("output");
+        testWebSocket();
+      }
 
-  function testWebSocket() {
-    websocket = new WebSocket(wsUri, "echo-protocol");
-    websocket.onopen = function (evt) {
-      onOpen(evt);
-    };
-    websocket.onclose = function (evt) {
-      onClose(evt);
-    };
-    websocket.onmessage = function (evt) {
-      onMessage(evt);
-    };
-    websocket.onerror = function (evt) {
-      onError(evt);
-    };
-  }
+      function testWebSocket() {
+        websocket = new WebSocket(wsUri, "echo-protocol");
+        websocket.onopen = function (evt) {
+          onOpen(evt);
+        };
+        websocket.onclose = function (evt) {
+          onClose(evt);
+        };
+        websocket.onmessage = function (evt) {
+          onMessage(evt);
+        };
+        websocket.onerror = function (evt) {
+          onError(evt);
+        };
+      }
 
-  function onOpen(evt) {
-    writeToScreen("CONNECTED");
-    doSend("WebSocket rocks");
-  }
+      function onOpen(evt) {
+        writeToScreen("CONNECTED");
+        doSend("WebSocket rocks");
+      }
 
-  function onClose(evt) {
-    writeToScreen("DISCONNECTED");
-  }
+      function onClose(evt) {
+        writeToScreen("DISCONNECTED");
+      }
 
-  function blobToUint8Array(b) {
-    var uri = URL.createObjectURL(b),
-      xhr = new XMLHttpRequest(),
-      i,
-      ui8;
+      function blobToUint8Array(b) {
+        var uri = URL.createObjectURL(b),
+          xhr = new XMLHttpRequest(),
+          i,
+          ui8;
 
-    xhr.open("GET", uri, false);
-    xhr.send();
+        xhr.open("GET", uri, false);
+        xhr.send();
 
-    URL.revokeObjectURL(uri);
+        URL.revokeObjectURL(uri);
 
-    ui8 = new Uint8Array(xhr.response.length);
+        ui8 = new Uint8Array(xhr.response.length);
 
-    let binary = "";
+        let binary = "";
 
-    for (i = 0; i < xhr.response.length; ++i) {
-      ui8[i] = xhr.response.charCodeAt(i);
-      binary += xhr.response.charCodeAt(i);
-    }
+        for (i = 0; i < xhr.response.length; ++i) {
+          ui8[i] = xhr.response.charCodeAt(i);
+          binary += xhr.response.charCodeAt(i);
+        }
 
-    return (binary >>> 0).toString(2);
-  }
+        return (binary >>> 0).toString(2);
+      }
 
-  function onMessage(evt) {
-    let message = evt.data;
+      function onMessage(evt) {
+        let message = evt.data;
 
-    if (evt.data instanceof Blob) {
-      message = blobToUint8Array(evt.data);
-    }
+        if (evt.data instanceof Blob) {
+          message = blobToUint8Array(evt.data);
+        }
 
-    writeToScreen('<span style="color: blue;">RESPONSE: ' + message + "</span>");
+        writeToScreen('<span style="color: blue;">RESPONSE: ' + message + "</span>");
 
-    // websocket.close();
-  }
+        // websocket.close();
+      }
 
-  function onError(evt) {
-    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-    console.log(evt);
-  }
+      function onError(evt) {
+        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+        console.log(evt);
+      }
 
-  function doSend(message) {
-    writeToScreen("SENT: " + message);
+      function doSend(message) {
+        writeToScreen("SENT: " + message);
 
-    const buffer = new ArrayBuffer(1);
-    buffer[0] = 1;
+        const buffer = new ArrayBuffer(1);
+        buffer[0] = 1;
 
-    // set the value to first flag on and second flag off
-    let view = new Uint8Array(buffer);
-    view[0] = 0b0;
+        // set the value to first flag on and second flag off
+        let view = new Uint8Array(buffer);
+        view[0] = 0b0;
 
-    websocket.send(buffer);
-  }
+        websocket.send(buffer);
+      }
 
-  function writeToScreen(message) {
-    var pre = document.createElement("p");
-    pre.style.wordWrap = "break-word";
-    pre.innerHTML = message;
-    output.appendChild(pre);
-  }
+      function writeToScreen(message) {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        output.appendChild(pre);
+      }
 
-  window.addEventListener("load", init, false);
-</script>
+      window.addEventListener("load", init, false);
 
-<h2>WebSocket Test</h2>
+      function play() {
+        player.playVideo();
+      }
 
-<div id="output"></div>
+      function pause() {
+        player.pauseVideo();
+      }
+
+      function seek() {
+        const location = document.getElementById("skip").value;
+
+        player.seekTo(Number.parseInt(location));
+      }
+
+      function onPlayerStateChange(event) {
+        console.log(event.data);
+      }
+
+      function displayCurrentTime() {
+        console.log(player.getCurrentTime());
+      }
+    </script>
+  </head>
+  <body>
+    <h2>WebSocket Test</h2>
+
+    <div id="output"></div>
+
+    <!-- YOUTUBE MUSIC PLAYER STUFF-->
+    <div id="ytplayer"></div>
+
+    <div>
+      <button onclick="play()">play</button>
+      <button onclick="pause()">pause</button>
+      <input id="skip" />
+      <button onclick="seek()">seek</button>
+      <button onclick="displayCurrentTime()">Print location</button>
+    </div>
+    <script>
+      var tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/player_api";
+      var firstScriptTag = document.getElementsByTagName("script")[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      var player;
+      function onYouTubePlayerAPIReady() {
+        player = new YT.Player("ytplayer", {
+          height: "360",
+          width: "640",
+          videoId: "M7lc1UVf-VE",
+          events: { onStateChange: onPlayerStateChange },
+        });
+      }
+    </script>
+  </body>
+</html>
