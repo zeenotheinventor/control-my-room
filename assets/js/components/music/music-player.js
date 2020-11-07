@@ -122,6 +122,8 @@ hiddenPlayer.on('timeupdate', function () {
       // quantize to be out of 100
       var second = hiddenPlayer[0].duration * parseInt(seekLocation) / 100;
       hiddenPlayer[0].currentTime = second;
+
+      player.seekTo(player.getDuration() * parseInt(seekLocation) / 100);
     })
   }
 
