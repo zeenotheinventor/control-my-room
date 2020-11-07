@@ -14,7 +14,7 @@ function secondsTimeSpanToHMS(s) {
 // Change Songs Here
 songs = [{
   src: "assets/songs/example.mp3",
-  title: "Hollywood Undead - Street Dreams",
+  title: "Waiting for the rain",
   coverart: "assets/img/music/01.jpg"
 }, {
   src: "assets/songs/Example.mp3",
@@ -102,18 +102,21 @@ hiddenPlayer.on('timeupdate', function () {
 
   var songCurrent = secondsTimeSpanToHMS(this.currentTime)
   var songCurrentParse = songCurrent.split(".")[0];
-  $('progress').attr("value", this.currentTime / this.duration);
+  $('#seekBar').attr("value", this.currentTime / this.duration);
 
   if (!hiddenPlayer[0].paused) {
     $("#playmusic").hide();
     $("#pause").show();
-    $('progress').css('cursor', 'pointer');
-    $('progress').on('click', function (e) {
+    $('#seekBar').css('cursor', 'pointer');
+    $('#seekBar').on('click', function (e) {
       var parentOffset = $(this).parent().offset();
       var relX = e.pageX - parentOffset.left;
-      var percPos = relX * 100 / 355;
-      var second = hiddenPlayer[0].duration * parseInt(percPos) / 100;
-      console.log(second);
+
+      // get relative X location of click
+      var seekLocation = relX * 100 / this.offsetWidth;
+
+      // quantize to be out of 100
+      var second = hiddenPlayer[0].duration * parseInt(seekLocation) / 100;
       hiddenPlayer[0].currentTime = second;
     })
   }
