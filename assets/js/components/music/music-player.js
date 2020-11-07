@@ -16,15 +16,17 @@ songs = [{
   src: "assets/songs/example.mp3",
   title: "Waiting for the rain",
   coverart: "assets/img/music/01.jpg"
-}, {
-  src: "assets/songs/Example.mp3",
-  title: "Ran D - Zombie",
-  coverart: "assets/img/music/02.jpg"
-}, {
-  src: "assets/songs/Other Example.mp3",
-  title: "Avenged Sevenfold - Carry On",
-  coverart: "assets/img/music/03.jpg"
-},];
+},
+  // {
+  //   src: "assets/songs/Example.mp3",
+  //   title: "Ran D - Zombie",
+  //   coverart: "assets/img/music/02.jpg"
+  // }, {
+  //   src: "assets/songs/Other Example.mp3",
+  //   title: "Avenged Sevenfold - Carry On",
+  //   coverart: "assets/img/music/03.jpg"
+  // },
+];
 
 var initSongSrc = songs[0].src;
 var initSongTitle = songs[0].title;
