@@ -11,9 +11,23 @@ function secondsTimeSpanToHMS(s) {
   s -= m * 60;
   return h + ":" + (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s);
 };
+
+
+const videoURL = null;
+$('#videoInput').change(() => {
+  function getUrlParameter(url, name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(url);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
+
+  videoURL = getUrlParameter($('#videoInput').val(), 'v')
+});
+
 // Change Songs Here
 songs = [{
-  src: "assets/songs/example.mp3",
+  src: "assets/songs/examplse.mp3",
   title: "Waiting for the rain",
   coverart: "assets/img/music/01.jpg"
 },
@@ -87,37 +101,30 @@ $('.prev').on('click', function () {
 });
 
 $("#playmusic").click(function () {
-  hiddenPlayer[0].play();
   player.playVideo();
   $("#playmusic").hide();
   $("#pause").show().addClass('active');
 });
 
 $("#pause").click(function () {
-  hiddenPlayer[0].pause();
   player.pauseVideo();
   $("#playmusic").show();
   $("#pause").hide();
 });
 
-
-// TODO kill interval on pause
 let timeUpdateInterval = null;
 
 function onPlayerStateChange(e) {
-  console.log(e.data);
   switch (e.data) {
     case YT.PlayerState.PLAYING:
-      timeUpdateInterval = setInterval(onTimeUpdate, 1000);
+      timeUpdateInterval = setInterval(onTimeUpdate, 100);
       break;
 
-    case YT.PlayerState.PAUSED:
-      clearInterval(timeUpdateInterval);
     default:
+      clearInterval(timeUpdateInterval);
       break;
   }
 }
-
 
 function onTimeUpdate() {
 
@@ -138,49 +145,20 @@ function onTimeUpdate() {
     player.seekTo(player.getDuration() * parseInt(seekLocation) / 100);
   });
 
-}
-
-hiddenPlayer.on('timeupdate', function () {
-  var songLength = secondsTimeSpanToHMS(this.duration)
-  var songLengthParse = songLength.split(".")[0];
-
-  var songCurrent = secondsTimeSpanToHMS(this.currentTime)
-  var songCurrentParse = songCurrent.split(".")[0];
-  $('#seekBar').attr("value", this.currentTime / this.duration);
-
-  if (!hiddenPlayer[0].paused) {
-    $("#playmusic").hide();
-    $("#pause").show();
-    $('#seekBar').css('cursor', 'pointer');
-    $('#ytseekBar').css('cursor', 'pointer');
-
-    // get rid of all the seek shit
-    $('#seekBar').on('click', function (e) {
-      var parentOffset = $(this).parent().offset();
-      var relX = e.pageX - parentOffset.left;
-
-      // get relative X location of click
-      var seekLocation = relX * 100 / this.offsetWidth;
-
-      // quantize to be out of 100
-      var second = hiddenPlayer[0].duration * parseInt(seekLocation) / 100;
-      hiddenPlayer[0].currentTime = second;
-    });
-  }
-
-  if (this.currentTime == this.duration) {
+  if (player.getCurrentTime() == player.getDuration()) {
     $('.next').trigger('click');
   }
-});
+
+}
 
 $("#mute").click(function () {
-  hiddenPlayer[0].volume = 1;
+  player.unMute();
   $("#mute").hide();
   $("#sound").show();
 });
 
 $("#sound").click(function () {
-  hiddenPlayer[0].volume = 0;
+  player.mute();
   $("#mute").show();
   $("#sound").hide();
 });
