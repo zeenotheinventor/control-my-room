@@ -88,12 +88,14 @@ $('.prev').on('click', function () {
 
 $("#playmusic").click(function () {
   hiddenPlayer[0].play();
+  player.playVideo();
   $("#playmusic").hide();
   $("#pause").show().addClass('active');
 });
 
 $("#pause").click(function () {
   hiddenPlayer[0].pause();
+  player.pauseVideo();
   $("#playmusic").show();
   $("#pause").hide();
 });

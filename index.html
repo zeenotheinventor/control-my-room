@@ -681,6 +681,24 @@
                     </div>
                     <!-- End Widget 28 -->
                   </div>
+
+                  <div id="ytplayer" style="display: none"></div>
+                  <script>
+                    var tag = document.createElement("script");
+                    tag.src = "https://www.youtube.com/player_api";
+                    var firstScriptTag = document.getElementsByTagName("script")[0];
+                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                    var player;
+                    function onYouTubePlayerAPIReady() {
+                      player = new YT.Player("ytplayer", {
+                        height: "360",
+                        width: "640",
+                        videoId: "M7lc1UVf-VE",
+                        // events: { onStateChange: onPlayerStateChange },
+                      });
+                    }
+                  </script>
                   <!-- Begin Widget 33 -->
                   <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
                     <div class="widget widget-33">
