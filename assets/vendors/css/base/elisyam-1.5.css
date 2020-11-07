@@ -360,7 +360,6 @@ button, input {
 
 .flex-row>[class*='col-'] > .widget {
   background: #fff;
-  height: 100%;
 }
 
 .flex-row>[class*='col-'] > .widget-image {
