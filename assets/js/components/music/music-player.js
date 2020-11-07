@@ -100,10 +100,45 @@ $("#pause").click(function () {
   $("#pause").hide();
 });
 
+
 // TODO kill interval on pause
-let timeUpdateInterval = setInterval(() => {
+let timeUpdateInterval = null;
+
+function onPlayerStateChange(e) {
+  console.log(e.data);
+  switch (e.data) {
+    case YT.PlayerState.PLAYING:
+      timeUpdateInterval = setInterval(onTimeUpdate, 1000);
+      break;
+
+    case YT.PlayerState.PAUSED:
+      clearInterval(timeUpdateInterval);
+    default:
+      break;
+  }
+}
+
+
+function onTimeUpdate() {
+
   $('#ytseekBar').attr("value", player.getCurrentTime() / player.getDuration());
-}, 1000)
+
+  $("#playmusic").hide();
+  $("#pause").show();
+  $('#ytseekBar').css('cursor', 'pointer');
+
+  $('#ytseekBar').on('click', function (e) {
+    var parentOffset = $(this).parent().offset();
+    var relX = e.pageX - parentOffset.left;
+
+    // get relative X location of click
+    var seekLocation = relX * 100 / this.offsetWidth;
+
+    // quantize to be out of 100
+    player.seekTo(player.getDuration() * parseInt(seekLocation) / 100);
+  });
+
+}
 
 hiddenPlayer.on('timeupdate', function () {
   var songLength = secondsTimeSpanToHMS(this.duration)
@@ -130,19 +165,6 @@ hiddenPlayer.on('timeupdate', function () {
       // quantize to be out of 100
       var second = hiddenPlayer[0].duration * parseInt(seekLocation) / 100;
       hiddenPlayer[0].currentTime = second;
-
-      // player.seekTo(player.getDuration() * parseInt(seekLocation) / 100);
-    });
-
-    $('#ytseekBar').on('click', function (e) {
-      var parentOffset = $(this).parent().offset();
-      var relX = e.pageX - parentOffset.left;
-
-      // get relative X location of click
-      var seekLocation = relX * 100 / this.offsetWidth;
-
-      // quantize to be out of 100
-      player.seekTo(player.getDuration() * parseInt(seekLocation) / 100);
     });
   }
 
