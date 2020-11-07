@@ -13,7 +13,7 @@ function secondsTimeSpanToHMS(s) {
 };
 
 
-const videoURL = null;
+let videoURL = null;
 $('#videoInput').change(() => {
   function getUrlParameter(url, name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -22,12 +22,16 @@ $('#videoInput').change(() => {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
 
-  videoURL = getUrlParameter($('#videoInput').val(), 'v')
+  videoURL = getUrlParameter($('#videoInput').val(), 'v');
+
+  player.loadVideoById(videoURL, 0, "large");
+
+
 });
 
 // Change Songs Here
 songs = [{
-  src: "assets/songs/examplse.mp3",
+  src: "assets/songs/example.mp3",
   title: "Waiting for the rain",
   coverart: "assets/img/music/01.jpg"
 },
@@ -47,6 +51,15 @@ var initSongTitle = songs[0].title;
 var initSongCover = songs[0].coverart;
 var items = songs.length - 1;
 
+function updatePlayerMetadata() {
+  title.html(player.getVideoData().title);
+  cover.attr('src', "https://img.youtube.com/vi/" + player.getVideoData().video_id + "/maxresdefault.jpg");
+}
+
+function onPlayerReady(e) {
+  updatePlayerMetadata()
+}
+
 hiddenPlayer.attr("src", initSongSrc);
 title.html(initSongTitle);
 cover.attr('src', initSongCover);
@@ -55,24 +68,24 @@ $('.next').on('click', function () {
   var songOrder = hiddenPlayer.attr('order');
 
   if (items == songOrder) {
-    num = 0;
-    var songSrc = songs[0].src;
-    var songTitle = songs[0].title;
-    var songCover = songs[0].coverart;
-    hiddenPlayer.attr('order', '0');
-    hiddenPlayer.attr('src', songSrc).trigger('play');
-    title.html(songTitle);
-    cover.attr('src', songCover);
+    // num = 0;
+    // var songSrc = songs[0].src;
+    // var songTitle = songs[0].title;
+    // var songCover = songs[0].coverart;
+    // hiddenPlayer.attr('order', '0');
+    // hiddenPlayer.attr('src', songSrc).trigger('play');
+    // title.html(songTitle);
+    // cover.attr('src', songCover);
   } else {
-    console.log(songOrder);
-    num += 1;
-    var songSrc = songs[num].src;
-    var songTitle = songs[num].title;
-    var songCover = songs[num].coverart;
-    hiddenPlayer.attr('src', songSrc).trigger('play');
-    title.html(songTitle);
-    cover.attr('src', songCover);
-    hiddenPlayer.attr('order', num);
+    // console.log(songOrder);
+    // num += 1;
+    // var songSrc = songs[num].src;
+    // var songTitle = songs[num].title;
+    // var songCover = songs[num].coverart;
+    // hiddenPlayer.attr('src', songSrc).trigger('play');
+    // title.html(songTitle);
+    // cover.attr('src', songCover);
+    // hiddenPlayer.attr('order', num);
   }
 });
 
@@ -120,8 +133,13 @@ function onPlayerStateChange(e) {
       timeUpdateInterval = setInterval(onTimeUpdate, 100);
       break;
 
+    case YT.PlayerState.UNSTARTED:
+      updatePlayerMetadata();
+      break;
+
     default:
       clearInterval(timeUpdateInterval);
+      console.log(e.data)
       break;
   }
 }
