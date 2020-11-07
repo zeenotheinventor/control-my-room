@@ -10729,7 +10729,7 @@ nav.navbar .user-size.dropdown-menu a.logout:hover {
   background: #e76c90;
 }
 
-.widget-33 progress::-moz-progress-bar {
+/* .widget-33 progress::-moz-progress-bar {
   background: #e76c90;
 }
 
@@ -10739,7 +10739,7 @@ nav.navbar .user-size.dropdown-menu a.logout:hover {
 
 .widget-33 progress::-webkit-progress-bar {
   background: #e76c90;
-}
+} */
 
 .widget-33 .actions {
   padding: 15px 20px;
